@@ -6,6 +6,8 @@
 #include "vector.h"
 
 enum class GrammarVariable : unsigned char {
+	EPSILON,
+
 	PROG,
 	DECLS,
 	DECL,
@@ -42,13 +44,13 @@ public:
 
 class GrammarCharacter {
 private:
-    enum class dreck {
+    enum class characterType {
         VARIABLE,
         TOKEN
     };
 
     struct GrammarCharacterType { // constructor missing which sets variable
-		dreck type;
+		characterType type;
 		union Variable_or_token
 		{
 			GrammarVariable variable;
@@ -58,18 +60,46 @@ private:
 
 public:
 
-   bool is_grammar_variable () {
-       return grammar_character_type.type == dreck::VARIABLE;
+    GrammarCharacter(GrammarVariable variable) {
+        grammar_character_type.type = characterType::VARIABLE;
+        grammar_character_type.variable_or_token.variable = variable;
+    }
+
+    GrammarCharacter(TokenType token) {
+        grammar_character_type.type = characterType::TOKEN;
+        grammar_character_type.variable_or_token.token = token;
+    }
+
+    void set_grammar_variable(GrammarVariable variable) {
+        grammar_character_type.type = characterType::VARIABLE;
+        grammar_character_type.variable_or_token.variable = variable;
+    }
+
+    void set_token_type(TokenType token) {
+        grammar_character_type.type = characterType::TOKEN;
+        grammar_character_type.variable_or_token.token = token;
+    }
+
+   bool is_grammar_variable () const {
+       return grammar_character_type.type == characterType::VARIABLE;
    }
 
-   bool is_token_type () {
-       return grammar_character_type.type == dreck::TOKEN;
+   bool is_token_type ()  const {
+       return grammar_character_type.type == characterType::TOKEN;
    }
+
+   GrammarVariable get_grammar_variable()  const {
+        return grammar_character_type.variable_or_token.variable;
+   }
+
+   TokenType get_token_type()  const {
+        return grammar_character_type.variable_or_token.token;
+    }
 };
 
 class GrammarWord {
-public:
-   Vector<GrammarCharacter> characters; //better: sorted list
+private:
+   Vector<GrammarCharacter> characters; //better: sorted list - vector is a sorted list
 };
 
 class GrammarProduction {
@@ -79,9 +109,13 @@ class GrammarProduction {
 
 
 class Grammar {
-public:
+private:
     GrammarVariable start = GrammarVariable::PROG;
     Vector<GrammarProduction> productions;
+
+public:
+    void prog() {
+    }
 };
 
 

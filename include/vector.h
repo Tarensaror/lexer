@@ -6,6 +6,7 @@
 #include <iterator>
 #include <algorithm>
 #include <type_traits>
+#include <memory>
 
 template<typename T> class Vector;
 
@@ -99,6 +100,14 @@ public:
 	}
 
 	iterator end() {
+		return this->next_free_space;
+	}
+
+	const_iterator begin() const {
+		return this->objects;
+	}
+
+	const_iterator end() const {
 		return this->next_free_space;
 	}
 

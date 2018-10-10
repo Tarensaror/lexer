@@ -21,15 +21,20 @@ int main(int argc, char* argv[]) {
 		std::cin.tie(nullptr);
 
 		Scanner scanner(argv[1]);
-		Vector<Token> tokens;
+        Parser parser;
+        Vector<Token> tokens; //remove for performance and give tokens straight to parser
+         // Grammar grammar; to dynamically build parse table with given grammar
+         // Parser parser = new Parser(grammar);
 
 		std::ofstream out(argv[2]);
 		if (!out.is_open()) throw OutputFileFailureException(argv[2]);
 
 		try {
+            parser.initializeParseTable();
 			while(true) {
-				tokens.push_back(scanner.next_token());
+                tokens.push_back(scanner.next_token());
 			}
+            parser.parse(tokens);
 		} catch(const BufferBoundsExceededException& end_of_file) {
 			for (Vector<Token>::iterator iterator = tokens.begin(), end = tokens.end(); iterator != end; ++iterator) {
 				switch(iterator->type) {

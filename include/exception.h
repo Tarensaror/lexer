@@ -5,7 +5,7 @@
 #include <string>
 
 class ParserException : public std::runtime_error {
-protected:
+public:
 	explicit ParserException(const std::string& description) : runtime_error(description) {}
 };
 
