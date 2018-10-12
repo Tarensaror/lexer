@@ -23,7 +23,6 @@ int main(int argc, char* argv[]) {
 
 		Scanner scanner(argv[1]);
         Parser parser;
-        Vector<Token> tokens; //remove for performance and give tokens straight to parser
          // Grammar grammar; to dynamically build parse table with given grammar
          // Parser parser = new Parser(grammar);
 
@@ -31,12 +30,10 @@ int main(int argc, char* argv[]) {
 		if (!out.is_open()) throw OutputFileFailureException(argv[2]);
 
 		try {
-            parser.initializeParseTable();
 			while(true) {
-                tokens.push_back(scanner.next_token());
+                parser.parse(scanner.next_token());
 			}
 		} catch(const BufferBoundsExceededException& end_of_file) {
-            parser.parse(tokens);
 //			for (Vector<Token>::iterator iterator = tokens.begin(), end = tokens.end(); iterator != end; ++iterator) {
 //				switch(iterator->type) {
 //				case TokenType::DEADBEEF:

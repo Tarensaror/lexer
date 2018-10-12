@@ -14,8 +14,11 @@ class SyntaxErrorException : public ParserException {
 public:
     explicit SyntaxErrorException(Token token)
      : ParserException(std::string("Syntax error with token ")
-        + std::to_string(static_cast<const int>(token.type)) + std::string(" occured in line ")
-        + token.line + std::string(" and column ") + token.column) {}
+        + std::to_string(static_cast<const int>(token.type))
+        + std::string(" occured in line ")
+        + std::to_string(static_cast<const int>(token.line))
+        + std::string(" and column ")
+        + std::to_string(static_cast<const int>(token.column))) {}
 };
 
 class BufferInitializationException : public ParserException {

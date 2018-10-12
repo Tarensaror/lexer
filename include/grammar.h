@@ -6,7 +6,7 @@
 #include "vector.h"
 
 enum class GrammarVariable : unsigned char {
-	EPSILON,
+	ROOT,
 
 	PROG,
 	DECLS,
@@ -59,6 +59,8 @@ private:
 	} grammar_character_type;
 
 public:
+
+    GrammarCharacter() {}
 
     GrammarCharacter(GrammarVariable variable) {
         grammar_character_type.type = characterType::VARIABLE;

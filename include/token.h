@@ -4,6 +4,8 @@
 #include "information.h"
 
 enum class TokenType : unsigned char {
+    EPSILON,
+
     DEADBEEF,
 
     PLUS,
