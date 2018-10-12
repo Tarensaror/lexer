@@ -9,7 +9,8 @@ enum Exit {
 	EXIT_UNSUPPORTED_ENCODING,
 	EXIT_MISSING_COMMAND_LINE_ARGUMENTS,
 	EXIT_INPUT_FILE_FAILURE,
-	EXIT_OUTPUT_FILE_FAILURE
+	EXIT_OUTPUT_FILE_FAILURE,
+	EXIT_SYNTAX_ERROR
 };
 
 int main(int argc, char* argv[]) {
@@ -34,21 +35,24 @@ int main(int argc, char* argv[]) {
 			while(true) {
                 tokens.push_back(scanner.next_token());
 			}
-            parser.parse(tokens);
 		} catch(const BufferBoundsExceededException& end_of_file) {
-			for (Vector<Token>::iterator iterator = tokens.begin(), end = tokens.end(); iterator != end; ++iterator) {
-				switch(iterator->type) {
-				case TokenType::DEADBEEF:
-				case TokenType::OUT_OF_RANGE_INTEGER:
-					std::cerr << *iterator << '\n';
-					break;
-				default:
-					out << *iterator << '\n';
-				}
-			}
+            parser.parse(tokens);
+//			for (Vector<Token>::iterator iterator = tokens.begin(), end = tokens.end(); iterator != end; ++iterator) {
+//				switch(iterator->type) {
+//				case TokenType::DEADBEEF:
+//				case TokenType::OUT_OF_RANGE_INTEGER:
+//					std::cerr << *iterator << '\n';
+//					break;
+//				default:
+//					out << *iterator << '\n';
+//				}
+//			}
 		} catch(const UnsupportedCharacterEncodingException& encoding_exception) {
 			std::cerr << encoding_exception.what() << std::endl;
 			return EXIT_UNSUPPORTED_ENCODING;
+		} catch(const ParserException& parser_exception) {
+            std::cerr << parser_exception.what() << std::endl;
+			return EXIT_SYNTAX_ERROR;
 		}
 
 		return EXIT_SUCCESS_0;

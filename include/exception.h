@@ -3,10 +3,19 @@
 
 #include <stdexcept>
 #include <string>
+#include "token.h"
 
 class ParserException : public std::runtime_error {
-public:
+protected:
 	explicit ParserException(const std::string& description) : runtime_error(description) {}
+};
+
+class SyntaxErrorException : public ParserException {
+public:
+    explicit SyntaxErrorException(Token token)
+     : ParserException(std::string("Syntax error with token ")
+        + std::to_string(static_cast<const int>(token.type)) + std::string(" occured in line ")
+        + token.line + std::string(" and column ") + token.column) {}
 };
 
 class BufferInitializationException : public ParserException {

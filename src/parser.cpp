@@ -1,15 +1,35 @@
 #include "parser.h"
 void Parser::parse(Vector<Token> tokens) {
-    //ParseTree tree;
+    ParseTree tree;
     Vector<GrammarCharacter> production_stack;
-    production_stack.emplace_back(GrammarVariable::PROG);
+    GrammarCharacter start = GrammarCharacter(GrammarVariable::PROG);
+    production_stack.emplace_back(start);
 
+    Node last_parent;
     for(const Token& token : tokens) {
-        const GrammarCharacter& top_element = production_stack.pop_back();
-        if (top_element.is_grammar_variable()) {
-            Vector<GrammarCharacter> production = parse_table[static_cast<std::size_t>(token.type)][static_cast<std::size_t>(top_element.get_grammar_variable())];
-        } else {
-            throw ParserException("Non-variable element on stack.");
+        if (token.type == TokenType::COMMENT) {
+            continue;
+        }
+        while (true) {
+            const GrammarCharacter& top_element = production_stack.pop_back();
+            if (top_element.is_grammar_variable()) {
+                Vector<GrammarCharacter> production = parse_table[static_cast<std::size_t>(token.type)][static_cast<std::size_t>(top_element.get_grammar_variable())];
+                if (production.size() == 0) {
+                    throw SyntaxErrorException(token);
+                }
+                for(Vector<GrammarCharacter>::const_reverse_iterator iter = production.rbegin(), end = production.rend(); iter != end; ++iter) {
+                    production_stack.push_back(*iter);
+                }
+                tree.add_character(top_element, last_parent);
+            } else if (top_element.is_token_type()) {
+                if (top_element.get_token_type() == token.type) {
+                    tree.add();
+                } else {
+                    throw SyntaxErrorException(token);
+                }
+            } else {
+                //throw ParserException(); TODO
+            }
         }
     }
 }
