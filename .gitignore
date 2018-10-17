@@ -6,3 +6,6 @@
 obj/*
 bin/*
 .dep/*
+.kde4/*
+parser
+.directory
