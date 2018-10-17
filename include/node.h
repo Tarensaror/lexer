@@ -8,10 +8,13 @@ private:
     friend class ParseTree;
     friend class Vector<Node>;
     Node* parent;
+    int level;
     GrammarCharacter character;
     Vector<Node> children;
 
-    Node(const GrammarCharacter& character, Node* parent) : parent(parent), character(character) {}
+    Node(const GrammarCharacter& character, Node* parent) : parent(parent), character(character) {
+        this->level = (this->parent != nullptr) ? (*(this->parent)).get_level() + 1 : 0;
+    }
 
 public:
     /**
@@ -32,6 +35,14 @@ public:
 
     Node get_parent() const {
         return *(this->parent);
+    }
+
+    Vector<Node> get_children() const {
+        return (this->children);
+    }
+
+    int get_level() {
+        return this->level;
     }
 };
 #endif /* NODE_H */

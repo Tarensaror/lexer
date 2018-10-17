@@ -44,6 +44,8 @@ int main(int argc, char* argv[]) {
 //					out << *iterator << '\n';
 //				}
 //			}
+            parser.finalize();
+            parser.get_parse_tree().get_root();
 		} catch(const UnsupportedCharacterEncodingException& encoding_exception) {
 			std::cerr << encoding_exception.what() << std::endl;
 			return EXIT_UNSUPPORTED_ENCODING;
