@@ -6,8 +6,6 @@
 #include "vector.h"
 
 enum class GrammarVariable : unsigned char {
-	ROOT,
-
 	PROG,
 	DECLS,
 	DECL,
@@ -19,7 +17,9 @@ enum class GrammarVariable : unsigned char {
 	EXP_2,
 	INDEX,
 	OP_EXP,
-	OP
+	OP,
+	
+	ROOT
 };
 
 class First {

@@ -4,7 +4,7 @@ EXEC = foobar
 CPPFLAGS = -Iinclude
 
 CFLAGS = -std=c11 -O3 -Wall -pedantic
-CXXFLAGS = -std=c++11 -O3 -Wall -pedantic
+CXXFLAGS = -std=c++11 -O3 -Wall -pedantic -ggdb
 
 
 DEPDIR = .dep
@@ -32,7 +32,7 @@ $(EXEC): $(OBJS)
 	$(CXX) $(OBJS) -o $(OUTDIR)/$(EXEC)
 
 clean:
-	$(RM) $(DEPDIR)/*.d $(DEPDIR)/*.Td $(DEPDIR)/*~ $(OBJDIR)/*.o $(OBJDIR)/*~ $(OUTDIR)/*~ $(OUTDIR)/$(EXEC) $(SRCDIR)/*~
+	$(RM) $(DEPDIR)/*.d $(DEPDIR)/*.Td $(DEPDIR)/*~ $(OBJDIR)/*.o $(OBJDIR)/*~ $(OUTDIR)/*~ $(OUTDIR)/$(EXEC) $(OUTDIR)/$(EXEC).exe $(SRCDIR)/*~
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.c
 $(OBJDIR)/%.o : $(SRCDIR)/%.c $(DEPDIR)/%.d
